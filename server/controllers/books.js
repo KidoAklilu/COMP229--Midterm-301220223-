@@ -18,10 +18,32 @@ export function displayBookList(req, res, next) {
 }
 
 //  GET the Book Details page in order to add a new Book
-export function displayAddPage(req, res, next) {}
+export function displayAddPage(req, res, next) {
+  res.render("index", {
+    title: "Add Books",
+    page: "books/add",
+    books: {},
+  });
+}
 
 // POST process the Book Details page and create a new Book - CREATE
-export function processAddPage(req, res, next) {}
+export function processAddPage(req, res, next) {
+  let newBooks = booksModel({
+    name: req.body.name,
+    author: req.body.author,
+    published: req.body.published,
+    description: req.body.description,
+    price: req.body.price,
+  });
+
+  booksModel.create(newBooks, (err, booksCollection) => {
+    if (err) {
+      console.error(err);
+      res.end(err);
+    }
+    res.redirect("/books/list");
+  });
+}
 
 // GET the Book Details page in order to edit an existing Book
 export function displayEditPage(req, res, next) {}
