@@ -74,7 +74,26 @@ export function processEditPage(req, res, next) {
     description: req.body.description,
     price: req.body.price,
   });
+  booksModel.updateOne({ _id: id }, newBooks, (err, booksCollection) => {
+    if (err) {
+      console.error(err);
+      res.end(err);
+    }
+
+    res.redirect("/books/list");
+  });
 }
 
 // GET - process the delete by user id
-export function processDelete(req, res, next) {}
+export function processDelete(req, res, next) {
+  let id = req.params.id;
+
+  booksModel.remove({ _id: id }, (err) => {
+    if (err) {
+      console.error(err);
+      res.end(err);
+    }
+
+    res.redirect("/books/list");
+  });
+}
