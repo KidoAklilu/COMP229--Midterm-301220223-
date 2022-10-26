@@ -46,10 +46,35 @@ export function processAddPage(req, res, next) {
 }
 
 // GET the Book Details page in order to edit an existing Book
-export function displayEditPage(req, res, next) {}
+export function displayEditPage(req, res, next) {
+  let id = req.params.id;
+
+  booksModel.findById(id, (err, booksCollection) => {
+    if (err) {
+      console.error(err);
+      res.end(err);
+    }
+    res.render("index", {
+      title: "Edit Books",
+      page: "books/edit",
+      book: booksCollection,
+    });
+  });
+}
 
 // POST - process the information passed from the details form and update the document
-export function processEditPage(req, res, next) {}
+export function processEditPage(req, res, next) {
+  let id = req.params.id;
+
+  let newBooks = booksModel({
+    _id: req.body.id,
+    name: req.body.name,
+    author: req.body.author,
+    published: req.body.published,
+    description: req.body.description,
+    price: req.body.price,
+  });
+}
 
 // GET - process the delete by user id
 export function processDelete(req, res, next) {}
